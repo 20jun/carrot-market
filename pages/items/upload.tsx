@@ -61,5 +61,5 @@ const Upload: NextPage = () => {
     </div>
   );
 };
-// 월요일 늦게일어나서 망함
+
 export default Upload;
