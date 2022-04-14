@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Button from "../../components/button";
 
 const EditProfile: NextPage = () => {
   return (
@@ -42,9 +43,7 @@ const EditProfile: NextPage = () => {
           />
         </div>
       </div>
-      <button className="py2 mt-5 w-full rounded-md border border-transparent bg-orange-500 px-4 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
-        Update profile
-      </button>
+      <Button text="Update profile" />
     </div>
   );
 };
