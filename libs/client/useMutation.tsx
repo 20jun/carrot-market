@@ -14,6 +14,7 @@ export default function useMutation(url: string): UseMutationResult {
     data: undefined,
     error: undefined,
   });
+  // data는 url
   function mutation(data: any) {
     setState((prev) => ({ ...prev, loading: true }));
     fetch(url, {
