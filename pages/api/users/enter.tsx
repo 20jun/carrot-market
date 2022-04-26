@@ -21,7 +21,7 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   const { phone, email } = req.body;
-  const user = phone ? { phone: +phone } : email ? { email } : null;
+  const user = phone ? { phone } : email ? { email } : null;
   if (!user) return res.status(400).json({ ok: false });
   const payload = Math.floor(100000 + Math.random() * 900000) + "";
 
@@ -111,7 +111,11 @@ async function handler(
   });
 }
 
-export default withHandler("POST", handler);
+export default withHandler({
+  method: "POST",
+  handler,
+  isPrivate: false,
+});
 
 // 폰 번호를 백엔드로 전송
 // 백엔드에서 데이터베이스에 있는 유저의 폰 번호를 검색
