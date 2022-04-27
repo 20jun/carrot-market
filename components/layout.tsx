@@ -128,7 +128,7 @@ export default function Layout({
               <span>라이브</span>
             </a>
           </Link>
-          <Link href="profile">
+          <Link href="/profile">
             <a className="flex flex-col items-center space-y-2">
               <svg
                 className="h-6 w-6"
