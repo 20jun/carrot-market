@@ -11,6 +11,7 @@ interface ProductsResponse {
   ok: boolean;
   products: Product[];
 }
+//
 
 const Home: NextPage = () => {
   const { user, isLoading } = useUser();
