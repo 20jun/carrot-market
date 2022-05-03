@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Button from "@components/button";
 import Layout from "@components/layout";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import Link from "next/link";
 import { Product, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
@@ -21,16 +21,24 @@ interface ItemDetailResponse {
 
 const ItemDetail: NextPage = () => {
   const router = useRouter();
-  console.log(router.query);
-  const { data, mutate } = useSWR<ItemDetailResponse>(
+  const { mutate } = useSWRConfig();
+  const { data, mutate: boundMutate } = useSWR<ItemDetailResponse>(
     router.query.id ? `/api/products/${router.query.id}` : null
   );
   const [toggleFav] = useMutation(`/api/products/${router.query.id}/fav`);
 
   const onFavClick = () => {
-    toggleFav({});
     if (!data) return;
-    mutate({ ...data, isLiked: !data.isLiked }, false);
+    // 함수 인자로 기존의 캐시에 있던 데이터를 받을 수 있다.(prev)
+    // 해당 화면에서 얻은 데이터만 변경하기를 원한다면 bound mutate를 사용
+    boundMutate((prev) => prev && { ...prev, isLiked: !prev.isLiked }, false);
+    // 다른 화면의 데이터를 변경하길 원한다면 unbound mutate를 사용
+    // mutate(
+    //   "/api/users/me",
+    //   (prev: any) => ({ok: !prev.ok}),
+    //   false
+    // );
+    toggleFav({});
   };
   return (
     <Layout canGoBack>
