@@ -60,6 +60,7 @@ model Fav {
   updatedAt DateTime @updatedAt
 }
 
+//
 // 동네생활 게시물
 model Post {
   id        Int         @id @default(autoincrement())
