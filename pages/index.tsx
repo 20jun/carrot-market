@@ -4,10 +4,9 @@ import Item from "@components/item";
 import Layout from "@components/layout";
 import useUser from "@libs/client/useUser";
 import Head from "next/head";
-import useSWR from "swr";
+import useSWR, { SWRConfig } from "swr";
 import { Product } from "@prisma/client";
-import Image from "next/image";
-import riceCake from "../public/kihun.png";
+import client from "@libs/server/client";
 
 export interface ProductWithCount extends Product {
   _count: {
@@ -26,7 +25,7 @@ const Home: NextPage = () => {
   const { data } = useSWR<ProductsResponse>("/api/products");
 
   return (
-    <Layout title="홈" hasTabBar>
+    <Layout seoTitle="홈" hasTabBar>
       <Head>
         <title>Home</title>
       </Head>
@@ -37,7 +36,7 @@ const Home: NextPage = () => {
             key={product.id}
             title={product.name}
             price={product.price}
-            hearts={product._count.favs}
+            hearts={product._count?.favs}
           />
         ))}
         <FloatingButton href="/products/upload">
@@ -58,9 +57,35 @@ const Home: NextPage = () => {
           </svg>
         </FloatingButton>
       </div>
-      <Image src={riceCake} placeholder="blur" quality={50} />
     </Layout>
   );
 };
 
-export default Home;
+const Page: NextPage<{ products: ProductWithCount[] }> = ({ products }) => {
+  return (
+    <SWRConfig
+      value={{
+        fallback: {
+          "/api/products": {
+            ok: true,
+            products,
+          },
+        },
+      }}
+    >
+      <Home />
+    </SWRConfig>
+  );
+};
+
+export async function getServerSideProps() {
+  const products = await client.product.findMany({});
+
+  return {
+    props: {
+      products: JSON.parse(JSON.stringify(products)),
+    },
+  };
+}
+
+export default Page;
