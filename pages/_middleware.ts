@@ -9,5 +9,5 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
       return NextResponse.redirect("/enter");
     }
   }
-  // return NextResponse.json({ ok: true });
+  //  return NextResponse.json({ ok: true });
 }
