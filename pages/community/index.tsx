@@ -107,13 +107,13 @@ const Community: NextPage<PostsResponse> = ({ posts }) => {
 // blog page에서 사용한 방법
 // 빌드할때 한 번만 실행됨
 export async function getStaticProps() {
+  console.log("BUILDING COMM. STATICALLY");
   const posts = await client.post.findMany({ include: { user: true } });
   return {
     props: {
       // 날짜를 제대로 인식하지 못하기 때문에
       posts: JSON.parse(JSON.stringify(posts)),
     },
-    revalidate: 20,
   };
 }
 
