@@ -24,8 +24,8 @@ export function getStaticPaths() {
   });
 
   return {
-    paths: files,
-    fallback: false,
+    paths: [],
+    fallback: "blocking",
   };
 }
 
